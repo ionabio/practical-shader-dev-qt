@@ -11,7 +11,7 @@ However, it is possible that I will amend the `QOpenGLWidget` and `QML` implemen
 
 The original code is currently in the `Old` folder, but please refer to [original repository](https://github.com/Apress/practical-shader-dev) for the source of them. 
 
-This repository accompanies [*Practical Shader Development*](https://www.apress.com/9781484244562) by Kyle Halladay (Apress, 2019).
+This repository accompanies [*Practical Shader Development*](https://www.apress.com/9781484244562) and the [original repository](https://github.com/Apress/practical-shader-dev) by Kyle Halladay (Apress, 2019).
 
 [comment]: #cover
 ![Cover image](9781484244562.jpg)
