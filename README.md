@@ -1,6 +1,6 @@
 # Qt implementation of the Practical shader development book
 
-Note. I am not affiliated with Apress or the writers. 
+Note. I am not affiliated with Apress or the original author of the book. 
 
 Under fair use, this repository will contain qt (currently `QWidgets`) implementation of the source code.
 
