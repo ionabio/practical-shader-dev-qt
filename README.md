@@ -4,7 +4,7 @@ Note. I am not affiliated with Apress or the original author of the book.
 
 Under fair use, this repository will contain qt (currently `QWidgets`) implementation of the source code.
 
-The QT framework has its own wrappers for calling OpenGl functions. Since that is the framework I will be working with daily, while reading the book, I practiced using QT.
+The QT framework has its own wrappers for calling OpenGl functions. Since that is the framework I will be working on a daily basis, while reading the book, I practiced using QT.
 
 The current implementation is targeted at `QWidgets`, and probably will contain `draw` in `QMainWindow`, 
 However, it is possible that I will amend the `QOpenGLWidget` and `QML` implementations as well.
