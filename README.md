@@ -1,13 +1,15 @@
-# Qt implementation of the APress Source Code
+# Qt implementation of the Practical shader development book
 
-Under fair use this repository will contain qt (currently `QWidgets`) implementation of the source code.
+Note. I am not affiliated with Apress or the writers. 
 
-The QT framework has its own wrappers on calling OpenGl functions. Since that is the framework I will be working with daily, while reading the book, I practiced using QT.
+Under fair use, this repository will contain qt (currently `QWidgets`) implementation of the source code.
 
-Current implementation is targeted at `QWidgets`, and probably will contain draw in `QMainWindow`, 
-However it is possible that I will ammend `QOpenGLWidget` and `QML` implementations as well.
+The QT framework has its own wrappers for calling OpenGl functions. Since that is the framework I will be working with daily, while reading the book, I practiced using QT.
 
-The original code is currently in `Old` folder, but please refer to [original repository](https://github.com/Apress/practical-shader-dev) for the source of them. 
+The current implementation is targeted at `QWidgets`, and probably will contain `draw` in `QMainWindow`, 
+However, it is possible that I will amend the `QOpenGLWidget` and `QML` implementations as well.
+
+The original code is currently in the `Old` folder, but please refer to [original repository](https://github.com/Apress/practical-shader-dev) for the source of them. 
 
 This repository accompanies [*Practical Shader Development*](https://www.apress.com/9781484244562) by Kyle Halladay (Apress, 2019).
 
@@ -16,7 +18,10 @@ This repository accompanies [*Practical Shader Development*](https://www.apress.
 
 ## Installation
 
-To Do. Until then the requirments are using CMake, and Qt 6
+To Do. Until then the requirements are using CMake, and Qt 6
+
+-------------------------
+From the original
 
 ## Releases
 
