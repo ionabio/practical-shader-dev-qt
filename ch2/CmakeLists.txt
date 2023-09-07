@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.16)
+project(ch2 VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_PREFIX_PATH "C:/Qt/6.3.2/msvc2019_64")
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui OpenGlWidgets OpenGL)
+qt_standard_project_setup()
+
+set(SOURCES
+main.cpp
+openGlWindow.cpp)
+
+set(HEADERS
+openglWindow.h)
+
+#add headers and sources to project
+qt_wrap_ui(UI_HEADERS ${UIS})
+qt_add_executable(ch2 ${SOURCES} ${HEADERS} ${UI_HEADERS})
+#add include directories
+include_directories (${CMAKE_BINARY_DIR})
+target_include_directories(ch2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/App "C:/Qt/6.3.2/msvc2019_64/include/QtOpenGLWidgets")
+
+find_package(OpenGL REQUIRED)
+target_link_libraries(ch2 PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::OpenGL Qt6::OpenGLWidgets  ${OPENGL_LIBRARIES})
+
