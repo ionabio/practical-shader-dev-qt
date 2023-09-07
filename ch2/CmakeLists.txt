@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-project(ch2 VERSION 1.0.0 LANGUAGES CXX)
+set(PROJECT_NAME "ch2")
+project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,11 +19,11 @@ openglWindow.h)
 
 #add headers and sources to project
 qt_wrap_ui(UI_HEADERS ${UIS})
-qt_add_executable(ch2 ${SOURCES} ${HEADERS} ${UI_HEADERS})
+qt_add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${UI_HEADERS})
 #add include directories
 include_directories (${CMAKE_BINARY_DIR})
-target_include_directories(ch2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/App "C:/Qt/6.3.2/msvc2019_64/include/QtOpenGLWidgets")
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/App "C:/Qt/6.3.2/msvc2019_64/include/QtOpenGLWidgets")
 
 find_package(OpenGL REQUIRED)
-target_link_libraries(ch2 PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::OpenGL Qt6::OpenGLWidgets  ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::OpenGL Qt6::OpenGLWidgets  ${OPENGL_LIBRARIES})
 
