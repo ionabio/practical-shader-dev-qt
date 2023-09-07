@@ -75,10 +75,6 @@ void OpenGlWindow::initializeTriangleWithRainbowOnEdges()
 	vertexBuffer.create();
 	vertexBuffer.bind();
 	vertexBuffer.allocate(vertexData, sizeof(vertexData));
-	
-	vao.create();
-	vao.bind();
-
 
 	int positionAttr = m_program.attributeLocation("pos");
 	m_program.enableAttributeArray(positionAttr);
@@ -89,12 +85,12 @@ void OpenGlWindow::initializeTriangleWithRainbowOnEdges()
 	colorBuffer.bind();
 	colorBuffer.allocate(colorData, sizeof(colorData));
 
-	vao.create();
-	vao.bind();
-
 	int colAttr = m_program.attributeLocation("col");
 	m_program.enableAttributeArray(colAttr);
 	m_program.setAttributeBuffer(colAttr, GL_FLOAT, 0, 4, 0);
+
+	vao.create();
+	vao.bind();
 }
 
 void OpenGlWindow::initializeRedTriangle()
