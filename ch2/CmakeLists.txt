@@ -15,7 +15,8 @@ main.cpp
 openGlWindow.cpp)
 
 set(HEADERS
-openglWindow.h)
+openglWindow.h
+shaders.h)
 
 #add headers and sources to project
 qt_wrap_ui(UI_HEADERS ${UIS})

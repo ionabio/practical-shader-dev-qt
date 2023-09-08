@@ -11,11 +11,18 @@
 using namespace std;
 int main(int argc, char* argv[]) {
 	cout<<"Welcome to Qt OpenGL"<<endl;
-	cout<<"Choose a mode of the chapter"<<endl;
-	cout<<"1. Triangle with rainbow on edges"<<endl;
-	cout<<"2. Red triangle"<<endl;
-	cout<<"2. Triangle with uniform color"<<endl;
-	cout <<"Enter your m_choice:"<<endl;
+	cout<<R"(
+
+Choose a mode of the chapter:
+
+1. Triangle with rainbow on edges
+
+2. Triangle with uniform color (press any key to change the colors
+(note that this second part is never implemented in the book, but it is implied and would make a good exercise)
+
+)";
+
+	cout <<"Enter your choice:"<<endl;
 	int choice;
 	cin>>choice;
 	assert(choice < 4 && choice > 0);
