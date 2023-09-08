@@ -8,15 +8,15 @@
 class OpenGlWindow : public QOpenGLWindow
 {
 public:
-	OpenGlWindow(int choice) :choice(choice){};
+	OpenGlWindow(int choice) :m_choice(choice){};
 	virtual ~OpenGlWindow();
 private:
-	int choice;
-	QOpenGLShaderProgram m_program;
-	QOpenGLBuffer vertexBuffer;
-	QOpenGLBuffer colorBuffer;
+	int m_choice;
+	QOpenGLShaderProgram* m_program;
+	QOpenGLBuffer* m_vertex_buffer;
+	QOpenGLBuffer* m_color_buffer;
+	QOpenGLVertexArrayObject* m_vertex_array_object;
 
-	QOpenGLVertexArrayObject vao;
 	void initializeTriangleWithRainbowOnEdges();
 	void initializeRedTriangle();
 	void initializeTriangleWithUniformColor();

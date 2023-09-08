@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 	cout<<"1. Triangle with rainbow on edges"<<endl;
 	cout<<"2. Red triangle"<<endl;
 	cout<<"2. Triangle with uniform color"<<endl;
-	cout <<"Enter your choice:"<<endl;
+	cout <<"Enter your m_choice:"<<endl;
 	int choice;
 	cin>>choice;
 	assert(choice < 4 && choice > 0);
