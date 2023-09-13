@@ -1,0 +1,48 @@
+cmake_minimum_required(VERSION 3.16)
+set(PROJECT_NAME "ch3")
+project(${PROJECT_NAME} VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_PREFIX_PATH "C:/Qt/6.3.2/msvc2019_64")
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui OpenGlWidgets OpenGL)
+qt_standard_project_setup()
+
+set(SOURCES
+main.cpp
+p1uvquad/p1oglwin.cpp
+p2fulltexture/p2oglwin.cpp
+p4colormath/p4oglwin.cpp
+)
+
+set(HEADERS
+p1uvquad/p1oglwin.h
+p2fulltexture/p2oglwin.h
+p4colormath/p4oglwin.h
+)
+
+# a manual way to add files to a groups, not so good for bigger projects, but fine for this one
+source_group("p1uvquad" FILES p1uvquad/p1oglwin.cpp p1uvquad/p1oglwin.h)
+source_group("p2fulltexture" FILES p2fulltexture/p2oglwin.cpp p2fulltexture/p2oglwin.h)
+source_group("p4colormath" FILES p4colormath/p4oglwin.cpp p4colormath/p4oglwin.h)
+
+#add headers and sources to project
+qt_wrap_ui(UI_HEADERS ${UIS})
+
+#add executable but put cpp and h files in different folders
+qt_add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${UI_HEADERS})
+
+#add include directories
+include_directories (${CMAKE_BINARY_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/App "C:/Qt/6.3.2/msvc2019_64/include/QtOpenGLWidgets")
+
+find_package(OpenGL REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::OpenGL Qt6::OpenGLWidgets  ${OPENGL_LIBRARIES})
+
+#add build step to copy assets folder to build output folder
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
