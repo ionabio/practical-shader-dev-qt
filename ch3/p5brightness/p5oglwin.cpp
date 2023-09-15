@@ -1,4 +1,4 @@
-#include "p4oglwin.h"
+#include "p5oglwin.h"
 
 #include <iostream>
 #include <QtGui/QOpenGLFunctions>
@@ -7,6 +7,8 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QImage>
+#include <QTimer>
+#include <QTime>
 #include <QFile>
 #include <QOpenGLTexture>
 #include <QCoreApplication>
@@ -38,33 +40,34 @@ const std::string vertexShaderSource = R"(#version 410
 layout (location = 0) in vec3 pos; 
 layout (location = 1) in vec2 uv;
 
+uniform float time;
+
 out vec2 fragUV;
 
 void main()
 {
 	gl_Position = vec4(pos, 1.0);
-	fragUV = uv;
+	fragUV = uv + vec2(0.25, 0) * time;
 }
 )";
 
-const std::string brightness = R"(#version 410
+const std::string blendTextureShaderSource = R"(#version 410
 
 uniform sampler2D parrotTex;
-uniform vec4 multiply;
-uniform vec4 add;
+uniform float brightness;
 
 in vec2 fragUV;
 out vec4 outCol;
 
 void main()
 {
-	outCol = texture(parrotTex, fragUV) * multiply + add;
+	outCol = texture(parrotTex, fragUV) * brightness;
 })";
 
 const std::string parrotPath = "/parrot.png";
 
 
-P4OGLWin::~P4OGLWin() {
+P5OGLWin::~P5OGLWin() {
 	makeCurrent();
 	m_program->removeAllShaders();
 	m_program->release();
@@ -75,14 +78,14 @@ P4OGLWin::~P4OGLWin() {
 
 }
 
-void P4OGLWin::initializeGL()
-{	
+void P5OGLWin::initializeGL()
+{
 	QOpenGLFunctions* f = QOpenGLContext::currentContext()->functions();
 	f->initializeOpenGLFunctions();
 	m_program = new QOpenGLShaderProgram();
 	m_vertex_array_object = new QOpenGLVertexArrayObject();
 	m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource.c_str()); // Replace with your vertex shader path
-	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, brightness.c_str()); // Replace with your fragment shader path
+	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, blendTextureShaderSource.c_str()); // Replace with your fragment shader path
 	m_program->link();
 	m_program->bind();
 
@@ -114,29 +117,43 @@ void P4OGLWin::initializeGL()
 	image = image.mirrored(); // to put it in correct orientation	
 
 	// More information: https://doc.qt.io/qt-6/qopengltexture.html
-	
+
 	m_texture = new QOpenGLTexture(image);
 	m_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
 	m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
 	m_texture->bind();
-	
+
 	//glActiveTexture(GL_TEXTURE0); // Set the active texture to be the first one
 	m_program->setUniformValue("parrotTex", 0); // Tell the shader the texture is at slot 0
+	float brightness = 0.5;
+	m_program->setUniformValue("brightness", brightness);
 
-	m_program->setUniformValue("add", 0, 0.3, 0, 0);
-	m_program->setUniformValue("multiply", 0.5, 1, 1, 1);
+	//start the timer
+	start_time = new QTime();
+	*start_time = QTime::currentTime();
 }
 
-void P4OGLWin::paintGL()
+void P5OGLWin::paintGL()
 {
 	glClearColor(0.0, 0.0, 0.0, 1.0); // Set the clear color to black
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Note the GL_QUAD used to be an old way of drawing which is depreciated since OGL 3. Triangle strip is pretty similar to what we want to achieve
 	// https://en.wikipedia.org/wiki/Triangle_strip
 	// The downside is we cannot index it as it seems it is possible with quads
+	QTime current_time = QTime::currentTime();
+	float time = start_time->msecsTo(current_time) / 1000.0f;
+	m_program->setUniformValue("time", time);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-void P4OGLWin::resizeGL(int w, int h)
+void P5OGLWin::resizeGL(int w, int h)
 {
 }
+
+P5OGLWin::P5OGLWin()
+{
+	QTimer* timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+	timer->start(32); //~30 fps
+};

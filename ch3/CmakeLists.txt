@@ -15,18 +15,24 @@ main.cpp
 p1uvquad/p1oglwin.cpp
 p2fulltexture/p2oglwin.cpp
 p4colormath/p4oglwin.cpp
+p5brightness/p5oglwin.cpp
+p6mixingtextures/p6oglwin.cpp
 )
 
 set(HEADERS
 p1uvquad/p1oglwin.h
 p2fulltexture/p2oglwin.h
 p4colormath/p4oglwin.h
+p5brightness/p5oglwin.h
+p6mixingtextures/p6oglwin.h
 )
 
 # a manual way to add files to a groups, not so good for bigger projects, but fine for this one
 source_group("p1uvquad" FILES p1uvquad/p1oglwin.cpp p1uvquad/p1oglwin.h)
 source_group("p2fulltexture" FILES p2fulltexture/p2oglwin.cpp p2fulltexture/p2oglwin.h)
 source_group("p4colormath" FILES p4colormath/p4oglwin.cpp p4colormath/p4oglwin.h)
+source_group("p5brightness" FILES p5brightness/p5oglwin.cpp p5brightness/p5oglwin.h)
+source_group("p6mixingtextures" FILES p6mixingtextures/p6oglwin.cpp p6mixingtextures/p6oglwin.h)
 
 #add headers and sources to project
 qt_wrap_ui(UI_HEADERS ${UIS})

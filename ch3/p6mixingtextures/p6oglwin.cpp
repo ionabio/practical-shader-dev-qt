@@ -1,4 +1,4 @@
-#include "p4oglwin.h"
+#include "p6oglwin.h"
 
 #include <iostream>
 #include <QtGui/QOpenGLFunctions>
@@ -7,6 +7,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QImage>
+#include <QTime>
 #include <QFile>
 #include <QOpenGLTexture>
 #include <QCoreApplication>
@@ -47,42 +48,46 @@ void main()
 }
 )";
 
-const std::string brightness = R"(#version 410
+const std::string blendTextureShaderSource = R"(#version 410
 
 uniform sampler2D parrotTex;
-uniform vec4 multiply;
-uniform vec4 add;
+uniform sampler2D checkerboardTex;
 
 in vec2 fragUV;
 out vec4 outCol;
 
 void main()
 {
-	outCol = texture(parrotTex, fragUV) * multiply + add;
+	vec4 parrot = texture(parrotTex, fragUV);
+	vec4 checker = texture(checkerboardTex, fragUV);
+	outCol = mix(checker, parrot, checker.r);
 })";
 
 const std::string parrotPath = "/parrot.png";
+const std::string checkerPath = "/checker.jpg";
 
 
-P4OGLWin::~P4OGLWin() {
+P6OGLWin::~P6OGLWin() {
 	makeCurrent();
 	m_program->removeAllShaders();
 	m_program->release();
 	m_vertex_array_object->release();
 	m_vertex_buffer->release();
 	m_uv_buffer->release();
+	m_parrot_texture->release();
+	m_checker_texture->release();
 	glDisable(GL_TEXTURE_2D);
 
 }
 
-void P4OGLWin::initializeGL()
-{	
+void P6OGLWin::initializeGL()
+{
 	QOpenGLFunctions* f = QOpenGLContext::currentContext()->functions();
 	f->initializeOpenGLFunctions();
 	m_program = new QOpenGLShaderProgram();
 	m_vertex_array_object = new QOpenGLVertexArrayObject();
 	m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource.c_str()); // Replace with your vertex shader path
-	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, brightness.c_str()); // Replace with your fragment shader path
+	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, blendTextureShaderSource.c_str()); // Replace with your fragment shader path
 	m_program->link();
 	m_program->bind();
 
@@ -107,36 +112,47 @@ void P4OGLWin::initializeGL()
 	m_program->enableAttributeArray(uvAttr);
 	m_program->setAttributeBuffer(uvAttr, GL_FLOAT, 0, 2, 0);
 
-	auto path = QCoreApplication::applicationDirPath().append(parrotPath.c_str());
+	auto pPath = QCoreApplication::applicationDirPath().append(parrotPath.c_str());
+	auto cPath = QCoreApplication::applicationDirPath().append(checkerPath.c_str());
 
 	// loading of image
-	QImage image(path);
-	image = image.mirrored(); // to put it in correct orientation	
+	QImage parrot(pPath);
+	parrot = parrot.mirrored(); // to put it in correct orientation
+	QImage checker(cPath);
+	checker = checker.mirrored(); 
 
 	// More information: https://doc.qt.io/qt-6/qopengltexture.html
-	
-	m_texture = new QOpenGLTexture(image);
-	m_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
-	m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
-	m_texture->bind();
-	
+
+	m_parrot_texture = new QOpenGLTexture(parrot);
+	m_parrot_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+	m_parrot_texture->setMagnificationFilter(QOpenGLTexture::Linear);
+	m_parrot_texture->bind(0);
+
 	//glActiveTexture(GL_TEXTURE0); // Set the active texture to be the first one
 	m_program->setUniformValue("parrotTex", 0); // Tell the shader the texture is at slot 0
-
-	m_program->setUniformValue("add", 0, 0.3, 0, 0);
-	m_program->setUniformValue("multiply", 0.5, 1, 1, 1);
+	
+	m_checker_texture = new QOpenGLTexture(checker);
+	m_checker_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+	m_checker_texture->setMagnificationFilter(QOpenGLTexture::Linear);
+	m_checker_texture->bind(1);
+	m_program->setUniformValue("checkerboardTex", 1); // Tell the shader the texture is at slot 1
 }
 
-void P4OGLWin::paintGL()
+void P6OGLWin::paintGL()
 {
 	glClearColor(0.0, 0.0, 0.0, 1.0); // Set the clear color to black
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Note the GL_QUAD used to be an old way of drawing which is depreciated since OGL 3. Triangle strip is pretty similar to what we want to achieve
 	// https://en.wikipedia.org/wiki/Triangle_strip
 	// The downside is we cannot index it as it seems it is possible with quads
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-void P4OGLWin::resizeGL(int w, int h)
+void P6OGLWin::resizeGL(int w, int h)
 {
 }
+
+P6OGLWin::P6OGLWin()
+{
+};
