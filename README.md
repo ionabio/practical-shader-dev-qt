@@ -7,12 +7,12 @@ Under fair use, this repository will contain qt (currently `QWidgets`) implement
 The QT framework has its own wrappers for calling OpenGl functions. Since that is the framework I will be working on a daily basis, while reading the book, I practiced using QT.
 
 The current implementation is targeted at `QWidgets`, and is `drawing` in `QOpenGlWindow`, which is very close to how 'QOpenGlWidget' functions are called 
-However, you should note that many ways I have identified on drawing opengl content in Qt alone:
+However, you should note while writing this code, I have identified many ways of drawing opengl content in Qt which include:
 - [QOpenGLWindow](https://doc.qt.io/qt-6/qopenglwindow.html#details_) (Current work)
 - QOpenGLWidget (Very similar to current implementation)
 - [QWindow + QOpenGLFunction](https://doc.qt.io/qt-5/qtgui-openglwindow-example.html) (a bit different, and still doable)
   This is also what is refered in [Qt Gui](https://doc.qt.io/qt-5/qtgui-index.html) sections I assume
-- [OpenGl using qml](https://doc.qt.io/qt-6/qtquick-scenegraph-openglunderqml-example.html) : currently I am not planning on this implementation yet 
+- [OpenGl using qml](https://doc.qt.io/qt-6/qtquick-scenegraph-openglunderqml-example.html) : currently I am not planning on this implementation. 
 - [QtOpenGL](https://doc.qt.io/qt-5/qtopengl-index.html) shouldn't be used, and I will avoid it as well
 The original code is currently in the `Old` folder, but please refer to [original repository](https://github.com/Apress/practical-shader-dev) for the source of them. 
 
